@@ -1,13 +1,8 @@
-import ollama
+from PIL import Image
+import pytesseract
 
-response = ollama.chat(
-    model="qwen2.5:3b",
-    messages=[
-        {
-            "role": "user",
-            "content": "Generate 3 MCQs about operating systems."
-        }
-    ]
-)
+image = Image.open("test.png")
 
-print(response["message"]["content"])
+text = pytesseract.image_to_string(image)
+
+print(text)
