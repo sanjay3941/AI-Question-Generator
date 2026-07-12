@@ -11,7 +11,7 @@ class PdfToText():
         self.file_name = file_name
         self.pages = {}
     
-    def extract_text(self):
+    def extract_text(self,progress_callback = None):
         doc = fitz.open(self.file_name)
         total_pages = len(doc)
         for page_num,page in enumerate(doc,start = 1):
@@ -31,6 +31,8 @@ class PdfToText():
 
             bar = "█" * filled + "-" * (bar_length - filled)
             print(f"\r[{bar}] {progress*100:.1f}% ({page_num}/{total_pages})",end="")
+            if progress_callback:
+                progress_callback(page_num,total_pages)
         print()       
         doc.close()
         return self.pages
@@ -52,7 +54,7 @@ class PptxToText():
     def __init__(self,filename):
         self.filename = filename
         self.pages = {}
-    def extract_text(self):
+    def extract_text(self,progress_callback = None):
         ppt = Presentation(self.filename)
         total_pages = len(ppt.slides)
         for page_num,slide in enumerate(ppt.slides,start=1):
@@ -75,6 +77,8 @@ class PptxToText():
                         except Exception as e:
                             print(f"\nOCR failed on slide {page_num}:{e}")
             self.pages[page_num] = slide_txt
+            if progress_callback:
+                progress_callback(page_num,total_pages)
             progress = page_num / total_pages
 
             bar_length = 30
