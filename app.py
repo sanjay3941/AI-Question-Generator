@@ -61,7 +61,7 @@ if filename:
                 progress_bar.empty()
                 status.success("Document Processed Sucessfully")
           elif file_path.suffix.lower()==".txt":
-                txtToText = TxttoText(filename)
+                txtToText = TxttoText(str(file_path))
                 txt = txtToText.extract_text()
                 file_format_verified = True
                 st.success("Document processed successfully!")
